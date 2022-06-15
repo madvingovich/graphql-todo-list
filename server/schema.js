@@ -7,9 +7,9 @@ var schema = buildSchema(`
 
   type Mutation {
     createTodo(input: TodoInput): Todo
-    toggleTodo(input: IdInput): Boolean
-    editTodo(input: TodoInput): Boolean
-    removeTodo(input: IdInput): Boolean
+    toggleTodo(input: IdInput): Todo
+    editTodo(input: TodoInput): Todo
+    removeTodo(input: IdInput): ID
   }
 
   type Todo {
