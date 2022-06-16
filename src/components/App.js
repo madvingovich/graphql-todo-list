@@ -1,11 +1,10 @@
-import { gql, useMutation, useQuery } from '@apollo/client';
-import './App.css';
-import GetAllTodosQuery from './gql/GetAllTodos.query.gql';
-import ToggleTodoMutation from './gql/ToggleTodo.mutation.gql';
-import CreateTodoMutation from './gql/CreateTodo.mutation.gql';
-import EditTodoMutation from './gql/EditTodo.mutation.gql';
-import RemoveTodoMutation from './gql/RemoveTodo.mutation.gql';
+import { useMutation, useQuery } from '@apollo/client';
 import React from 'react';
+import CreateTodoMutation from '../gql/CreateTodo.mutation.gql';
+import EditTodoMutation from '../gql/EditTodo.mutation.gql';
+import GetAllTodosQuery from '../gql/GetAllTodos.query.gql';
+import RemoveTodoMutation from '../gql/RemoveTodo.mutation.gql';
+import ToggleTodoMutation from '../gql/ToggleTodo.mutation.gql';
 
 function App() {
   const [title, setTitle] = React.useState('');
