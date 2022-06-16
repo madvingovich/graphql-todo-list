@@ -2,19 +2,25 @@ import { useMutation, useQuery } from '@apollo/client';
 import React from 'react';
 import TodoInput from './TodoInput';
 import TodoList from './TodoList';
+import { getTodoGraphqlInstance } from './utils/getTodoGraphqlInstance';
+import { updateCachedTodoList } from './utils/updateCachedTodoList';
 
 import CreateTodoMutation from '../../gql/CreateTodo.mutation.gql';
 import EditTodoMutation from '../../gql/EditTodo.mutation.gql';
 import GetAllTodosQuery from '../../gql/GetAllTodos.query.gql';
 import RemoveTodoMutation from '../../gql/RemoveTodo.mutation.gql';
 import ToggleTodoMutation from '../../gql/ToggleTodo.mutation.gql';
-import { updateTodoListOnCreate } from './updateTodoListOnCreate';
-import { updateTodoListOnRemove } from './updateTodoListOnRemove';
 
 function TodoListContainer() {
   const [title, setTitle] = React.useState('');
 
   const { data, loading, error } = useQuery(GetAllTodosQuery);
+
+  const updateTodoListOnRemove = updateCachedTodoList((todos, response) =>
+    todos.filter((t) => t.id !== response.data.removeTodo),
+  );
+
+  const updateTodoListOnCreate = updateCachedTodoList((todos, response) => [...todos, response.data?.createTodo]);
 
   const [toggleTodo] = useMutation(ToggleTodoMutation);
 
@@ -32,12 +38,7 @@ function TodoListContainer() {
     createTodo({
       variables: { title },
       optimisticResponse: {
-        createTodo: {
-          id: Math.random(),
-          title: `OPTIMISTIC ${title}`,
-          done: false,
-          __typename: 'Todo',
-        },
+        createTodo: getTodoGraphqlInstance(Math.random(), `OPTIMISTIC ${title}`, false),
       },
     });
     setTitle('');
@@ -49,25 +50,17 @@ function TodoListContainer() {
       editTodo({
         variables: { id, title: `MODIFIED ${title}` },
         optimisticResponse: {
-          editTodo: {
-            __typename: 'Todo',
-            id,
-            title: `OPTIMISTIC ${title}`,
-          },
+          editTodo: getTodoGraphqlInstance(id, `OPTIMISTIC ${title}`),
         },
       });
 
   const handleTodoToggle =
-    ({ id, done }) =>
+    ({ id, title, done }) =>
     () =>
       toggleTodo({
         variables: { id },
         optimisticResponse: {
-          toggleTodo: {
-            __typename: 'Todo',
-            id,
-            done: !done,
-          },
+          toggleTodo: getTodoGraphqlInstance(id, title, !done),
         },
       });
 
