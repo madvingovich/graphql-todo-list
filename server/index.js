@@ -4,7 +4,7 @@ const { graphqlHTTP } = require('express-graphql');
 const { schema } = require('./schema');
 const { getTodos, createTodo, toggleTodo, editTodo, removeTodo } = require('./todolist');
 
-const sleep = (time = 3000) => new Promise((resolve) => setTimeout(resolve, time));
+const sleep = (time = 1000) => new Promise((resolve) => setTimeout(resolve, time));
 
 const delayedResponse = (onDone) => sleep().then(onDone);
 
