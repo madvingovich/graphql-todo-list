@@ -1,0 +1,6 @@
+mutation EditTodo($id: ID!, $title: String!) {
+  editTodo(input: { id: $id, title: $title }) {
+    id
+    title
+  }
+}

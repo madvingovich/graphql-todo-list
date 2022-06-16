@@ -1,0 +1,6 @@
+mutation ToggleTodo($id: ID!) {
+  toggleTodo(input: { id: $id }) {
+    id
+    done
+  }
+}

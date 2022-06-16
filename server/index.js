@@ -6,15 +6,15 @@ const { getTodos, createTodo, toggleTodo, editTodo, removeTodo } = require('./to
 
 const sleep = (time = 3000) => new Promise((resolve) => setTimeout(resolve, time));
 
-const delayedResponse = (result) => sleep().then(() => result);
+const delayedResponse = (onDone) => sleep().then(onDone);
 
 // The root provides a resolver function for each API endpoint
 const root = {
   getAllTodos: () => getTodos(),
-  createTodo: ({ input }) => delayedResponse(createTodo(input)),
-  toggleTodo: ({ input }) => delayedResponse(toggleTodo(input)),
-  editTodo: ({ input }) => delayedResponse(editTodo(input)),
-  removeTodo: ({ input }) => delayedResponse(removeTodo(input)),
+  createTodo: ({ input }) => delayedResponse(() => createTodo(input)),
+  toggleTodo: ({ input }) => delayedResponse(() => toggleTodo(input)),
+  editTodo: ({ input }) => delayedResponse(() => editTodo(input)),
+  removeTodo: ({ input }) => delayedResponse(() => removeTodo(input)),
 };
 
 const app = express();
